@@ -17,6 +17,7 @@ class BookListView(PaginatedQuerysetMixin, ListView):
 
     def get_queryset(self):
         q = Q()
+
         book = self.request.GET.get('book')
         article_name = self.request.GET.get('article_name')
         author = self.request.GET.get('author')
@@ -112,6 +113,7 @@ class ClientsLoanJournalView(LoanJournalAnnotationMixin, PaginatedQuerysetMixin,
     def get_queryset(self):
         client_id = self.kwargs.get('pk')
         annotation = self.get_loan_journal_annotation()
+
         return self.model.objects.filter(client__id=client_id).annotate(**annotation)
 
     def get_context_data(self, **kwargs):
