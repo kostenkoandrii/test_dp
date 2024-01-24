@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+        <h2>Client info </h2>
+
+    <table>
+        <tr style="border: 2px black">
+            <th>First name</th>
+            <th>Last Name</th>
+            <th>Address</th>
+            <th>Phone number</th>
+            <th>Client Loan Journal</th>
+        </tr>
+        <tr>
+            <td>{{ client.first_name }}</td>
+            <td>{{ client.last_name }}</td>
+            <td>{{ client.address }}</td>
+            <td>{{ client.phone_number }}</td>
+            <td>
+                <a href="/library/clients/{{ client.id }}/loan-journal">journal link</a>
+            </td>
+        </tr>
+    </table>
+
+{% endblock %}

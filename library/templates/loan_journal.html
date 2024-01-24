@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block content %}
+        <h2>Loan Journal</h2>
+
+    <form method="get" action="{% url 'loan_journal' %}">
+        <label for="book">Book name:</label>
+        <input type="text" name="book" id="book" value="{{ request.GET.book }}">
+
+        <label for="client_name">Client Name:</label>
+        <input type="text" name="client_name" id="client_name" value="{{ request.GET.client }}">
+
+        <label for="status">Status:</label>
+        <select name="status" id="status">
+            <option value="" {% if not request.GET.status %}selected{% endif %}></option>
+            <option value="IN USE" {% if request.GET.status == "IN USE" %}selected{% endif %}>IN USE</option>
+            <option value="RETURNED" {% if request.GET.status == "RETURNED" %}selected{% endif %}>RETURNED</option>
+        </select>
+
+        <label for="exp_status">Status:</label>
+        <select name="exp_status" id="exp_status">
+            <option value="" {% if not request.GET.exp_status %}selected{% endif %}></option>
+            <option value="NOT EXPIRED" {% if request.GET.exp_status == "NOT EXPIRED" %}selected{% endif %}>NOT EXPIRED</option>
+            <option value="EXPIRED" {% if request.GET.exp_status == "EXPIRED" %}selected{% endif %}>EXPIRED</option>
+        </select>
+
+        <label for="days_left">Left days less then</label>
+        <input type="text" name="days_left" id="days_left" value="{{ request.GET.days_left }}">
+
+        <button type="submit">Filter</button>
+    </form>
+    <table>
+        <tr style="border: 2px black">
+            <th>Client</th>
+            <th>Book</th>
+            <th>Status</th>
+            <th>Expiration Status</th>
+            <th>Left days</th>
+        </tr>
+        {% for record in loan_journal %}
+            <tr>
+                <td>
+                    <a href="/library/clients/{{ record.client.id }}">{{ record.client.first_name }} {{ record.client.last_name }}</a>
+                </td>
+                <td>{{ record.book.name }}</td>
+                <td>{{ record.status }}</td>
+                <td>{{ record.expiration_status }}</td>
+                {% if record.days_left.days < 0 %}
+                    <td>0</td>
+                {% else %}
+                    <td>{{ record.days_left.days }}</td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+    </table>
+
+    <div class="pagination">
+        <span class="step-links">
+            {% if loan_journal.has_previous %}
+                <a href="?page={{ loan_journal.previous_page_number }}{% if request.GET.book %}&book={{ request.GET.book }}{% endif %}{% if request.GET.client_name %}&client_name={{ request.GET.client_name }}{% endif %}">previous</a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ loan_journal.number }} of {{ paginator.num_pages }}.
+            </span>
+
+            {% if loan_journal.has_next %}
+                <a href="?page={{ loan_journal.next_page_number }}{% if request.GET.book %}&book={{ request.GET.book }}{% endif %}{% if request.GET.client_name %}&client_name={{ request.GET.client_name }}{% endif %}">next</a>
+            {% endif %}
+        </span>
+    </div>
+{% endblock %}

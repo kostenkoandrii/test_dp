@@ -1,0 +1,47 @@
+[
+  {
+    "model": "library.author",
+    "pk": 1,
+    "fields": {
+      "first_name": "Author 1",
+      "last_name": "Last Name 1",
+      "date_of_birth": "2000-01-01"
+    }
+  },
+  {
+    "model": "library.author",
+    "pk": 2,
+    "fields": {
+      "first_name": "Author 2",
+      "last_name": "Last Name 2",
+      "date_of_birth": "1995-02-15"
+    }
+  },
+  {
+    "model": "library.author",
+    "pk": 3,
+    "fields": {
+      "first_name": "Author 3",
+      "last_name": "Last Name 3",
+      "date_of_birth": "1988-05-20"
+    }
+  },
+  {
+    "model": "library.author",
+    "pk": 4,
+    "fields": {
+      "first_name": "Author 4",
+      "last_name": "Last Name 4",
+      "date_of_birth": "1990-08-10"
+    }
+  },
+  {
+    "model": "library.author",
+    "pk": 5,
+    "fields": {
+      "first_name": "Author 5",
+      "last_name": "Last Name 5",
+      "date_of_birth": "1993-11-30"
+    }
+  }
+]

@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+        <h2>Loan Journal</h2>
+    <table>
+        <tr style="border: 2px black">
+            <th>Client</th>
+            <th>Book</th>
+            <th>Status</th>
+            <th>Exparation Status</th>
+            <th>Left days</th>
+        </tr>
+        {% for record in loan_journal %}
+            <tr>
+                <td>
+                    <a href="/library/clients/{{ record.client.id }}">{{ record.client.first_name }} {{ record.client.last_name }}</a>
+                </td>
+                <td>{{ record.book.name }}</td>
+                <td>{{ record.status }}</td>
+                <td>{{ record.expiration_status }}</td>
+                {% if record.days_left.days < 0 %}
+                    <td>0</td>
+                {% else %}
+                    <td>{{ record.days_left.days }}</td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+    </table>
+
+    <div class="pagination">
+        <span class="step-links">
+            {% if loan_journal.has_previous %}
+                <a href="?page={{ loan_journal.previous_page_number }}{% if request.GET.title %}&title={{ request.GET.title }}{% endif %}{% if request.GET.client_name %}&client_name={{ request.GET.client_name }}{% endif %}">previous</a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ loan_journal.number }} of {{ paginator.num_pages }}.
+            </span>
+
+            {% if loan_journal.has_next %}
+                <a href="?page={{ loan_journal.next_page_number }}{% if request.GET.title %}&title={{ request.GET.title }}{% endif %}{% if request.GET.client_name %}&client_name={{ request.GET.client_name }}{% endif %}">next</a>
+            {% endif %}
+        </span>
+    </div>
+{% endblock %}

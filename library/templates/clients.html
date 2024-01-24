@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block content %}
+        <h2>Clients list</h2>
+
+    <table>
+        <tr>
+            <th>First name</th>
+            <th>Last Name</th>
+            <th>Address</th>
+            <th>Phone number</th>
+            <th>Client Loan Journal</th>
+        </tr>
+        {% for client in clients %}
+            <tr>
+                <td>{{ client.first_name }}</td>
+                <td>{{ client.last_name }}</td>
+                <td>{{ client.address }}</td>
+                <td>{{ client.phone_number }}</td>
+                <td>
+                    <a href="/library/clients/{{ client.id }}/loan-journal">journal link</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+
+    <div class="pagination">
+        <span class="step-links">
+            {% if clients.has_previous %}
+                <a href="?page={{ clients.previous_page_number }}">previous</a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ clients.number }} of {{ paginator.num_pages }}.
+            </span>
+
+            {% if clients.has_next %}
+                <a href="?page={{ clients.next_page_number }}">next</a>
+            {% endif %}
+        </span>
+    </div>
+{% endblock %}

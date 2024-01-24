@@ -1,0 +1,33 @@
+version: '3'
+
+services:
+  database:
+    image: postgres
+    environment:
+      - POSTGRES_DB=test_db
+      - POSTGRES_USER=test_user
+      - POSTGRES_PASSWORD=test_pass
+    ports:
+      - "127.0.0.1:5432:5432/tcp"
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/app
+    command: [
+      "sh", "-c", "python manage.py migrate &&
+      python manage.py loaddata library/fixtures/authors.json &&
+      python manage.py loaddata library/fixtures/clients.json &&
+      python manage.py loaddata library/fixtures/books.json &&
+      python manage.py loaddata library/fixtures/books_summary.json &&
+      python manage.py loaddata library/fixtures/loan_journal.json &&
+      python manage.py runserver 0.0.0.0:8000"
+    ]
+    env_file:
+      - .env
+    depends_on:
+      - database
+    ports:
+      - "8000:8000"

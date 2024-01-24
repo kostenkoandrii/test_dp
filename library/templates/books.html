@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block content %}
+        <h2>Books list</h2>
+
+    <form method="get" action="{% url 'book_list' %}">
+        <label for="book">Book name:</label>
+        <input type="text" name="book" id="book" value="{{ request.GET.book }}">
+
+        <label for="article_name">Article Name:</label>
+        <input type="text" name="article_name" id="article_name" value="{{ request.GET.article_name }}">
+
+        <label for="author">Author Name:</label>
+        <input type="text" name="author" id="author" value="{{ request.GET.author }}">
+
+        <button type="submit">Filter</button>
+    </form>
+    <table>
+        <tr style="border: 2px black">
+            <th>Books</th>
+            <th>Authors</th>
+        </tr>
+        {% for book in books %}
+            <tr>
+                <td>
+                    {{ book.name }}
+                <ul>
+                    {% for book_article in book.summary.all %}
+                        <li>
+                            {{ book_article.article_name }} ........... page {{ book_article.page_number}}
+                        </li>
+                    {% endfor %}
+                </ul>
+                </td>
+                <td>{{ book.author.first_name }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+
+    <div class="pagination">
+        <span class="step-links">
+            {% if books.has_previous %}
+                <a href="?page={{ books.previous_page_number }}{% if request.GET.book %}&book={{ request.GET.book }}{% endif %}{% if request.GET.article_name %}&article_name={{ request.GET.article_name }}{% endif %}">previous</a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ books.number }} of {{ paginator.num_pages }}.
+            </span>
+
+            {% if books.has_next %}
+                <a href="?page={{ books.next_page_number }}{% if request.GET.book %}&book={{ request.GET.book }}{% endif %}{% if request.GET.article_name %}&article_name={{ request.GET.article_name }}{% endif %}">next</a>
+            {% endif %}
+        </span>
+    </div>
+{% endblock %}
